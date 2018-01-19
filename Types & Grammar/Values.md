@@ -1,9 +1,9 @@
-# Values
-
+Values
+=======
 ## Arrays
  containers for any type of Value
 
-```
+```javascript
 var a = [1, "2", [3]];
 
 a.length; // 3
@@ -11,7 +11,7 @@ a[0] === 1; //true
 a[2][0] === 3 // true
 ```
 
-```
+```javascript
 var a =[];
 
 a.length; // 0
@@ -22,7 +22,7 @@ a[2] = [3];
 a.length; // 3
 ```
 
-```
+```javascript
 var  a = []
 
 a[0] = 1;
@@ -34,7 +34,7 @@ a.length; //3
 ```
 arrays also are objects
 
-```
+```javascript
 var a = [];
 
 a[0] = 1;
@@ -46,7 +46,7 @@ a.foobar     // 2
 ```
 a `string` value intented as a key can be coerced to a standard base 10 `number`.
 
-```
+```javascript
 var a = [];
 a["13"] = 42;
 a.length; //14
@@ -310,12 +310,91 @@ if(！APP.ready) {
 ##### The not number,numbers
 NaN literally stands for “not a number”.尽管这个说法不准确
 更准确的应该说 NaN is an "invalid number"(无效的数字)，"failed number"(错误的数字), "bad number"(坏的数字)。
+
 ```
 var a = 1/"foo"; // NaN
 typeof a == "number";  //true
-
 ```
+
 "the type of not-a-number is `number`"
 or "the type of NaN is `number`"
+`NaN` 是数字类型
+非数字 是数字类型
 
-page 27
+```
+var a = 2/ "foo";
+a  == NaN;  //false
+a === NaN;  //false
+NaN !== NaN //true
+isNaN(a); //true 是不是非数字
+```
+`NaN` 是一个特殊的值，它永远不会等价于另外一个`NaN`(就是说它永不等于它自己)
+```
+var a = a /"foo";
+var b = "foo";
+
+a; //NaN
+b; "foo"
+
+window.isNaN( a ); //true
+window.isNaN( b );// true -- ouch!
+```
+"foo"很显然不是数字，但是也不是非数字。这是js的bug。
+ES6 使用新的工具 `NUmber.isNaN()`
+```
+if(!Number.isNaN) {
+    Number.isNaN = function(n) {
+        return(
+            typeof n === "number" && window.isNaN( n )
+            );
+    };
+}
+
+var a = 2 /"foo";
+var b= "foo";
+
+Number.isNaN( a ); //true
+Number.isNaN( b ); //false
+```
+其实我们是可以利用非数字的特点
+
+```
+if(!Number.isNaN) {
+    Number.isNaN = function(n) {
+        return n! = n;
+    };
+}
+```
+> 总结 使用 `isNaN`是有bug, ES6使用了新的工具 Number.isNaN
+
+#### infinity（无穷数)
+
+Infinity / Infinity is not a defined operation. In JS, this results in NaN.
+无穷数除以无穷数结果是 NaN(非数字)
+finite / Infinity = 0
+
+#### Zeros
+```javascript
+var a =0;
+var b = 0 / -3;
+
+a == b;  //true
+-0 == 0; //true
+
+a === b; // true
+-0 === 0; //true
+
+0 > -0;  //false
+a > b; //false
+```
+如果你想要区别 0 和 -0
+
+```javascript
+function isNagZero(n) {
+    n =Number(n);
+    return (n===0) && (1/n === -Infinity);
+}
+
+isNagZero( -0 ); //true
+isNagZero( 0 / -3 );//true
+isNagZero( 0 );//false
