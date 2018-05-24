@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		const spending_threshold = 440;
+		const tax_rate = 0.08;
+		const phone_price = 99.99;
+		const accessory_price = 5.99;
+
+		var bank_account_balance;
+		bank_account_balance = prompt( "Please tell me your age:" );
+
+        var spending = 0;
+
+		function formatSpending(spending) {
+			return  "$" + spending.toFixed( 2 );
+		}
+
+		function getTax(spending) {
+			return  spending * tax_rate
+		}
+
+
+		while ( spending < bank_account_balance ) {
+
+			if( spending < spending_threshold) {
+
+              spending =  spending + phone_price + accessory_price
+
+			} else {
+			  spending =  spending + phone_price
+			}
+		}
+		spending  =  spending + getTax(spending)
+		console.log( "your purchase: " + formatSpending(spending))
+
+		if ( spending > bank_account_balance )
+		{ console.log("sorry,buddy, you cant afford") }
+
+	</script>
+
+</body>
+</html>
